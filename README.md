@@ -114,7 +114,7 @@ def request(self,flow: http.HTTPFlow):
     # id=1&name=test
     if req.urlencoded_form:
         form_data = req.urlencoded_form
-        if "id" in form_data:
+        if form_data.get("id"):
             form_data["id"] = 2
     
     # 修改body原始字节数据
