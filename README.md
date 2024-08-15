@@ -141,6 +141,19 @@ def response(self,flow: http.HTTPFlow):
     # 修改响应的文本数据
     if rsp.text:
         rsp.text = "data"
+```
+5. 配合[JsRpc](https://github.com/jxhczhl/JsRpc)
+```python
+def request(self,flow: http.HTTPFlow):
+    # 获取请求对象，其中包含了一个HTTP请求的相关信息
+    req = flow.request
     
-
+    data = {
+        "group": "zzz",
+        "action": "decrypt",
+        "param": json.dumps({"data":req.text})
+    }
+    response = self.client.post("http://127.0.0.1:12080",data=data)
+    decrypt_data = response.text
+```
 
