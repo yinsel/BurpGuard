@@ -5,8 +5,13 @@
 **注：要求使用者具备一定Python基础**
 
 ## 使用方法
+1. 安装依赖：
 
-1. 查看使用帮助：
+```python
+$ pip install -r requirements.txt
+```
+
+2. 查看使用帮助：
 
 ```python
 $ python BurpGuard.py -h
@@ -27,13 +32,13 @@ options:
                         最终请求代理
   -v, --verbose         输出详细请求日志, 默认关闭
 ```
-2. 分别在`ClientProxyHandler.py`和`BurpProxyHandler.py`中编写请求加解密逻辑：
+3. 分别在`ClientProxyHandler.py`和`BurpProxyHandler.py`中编写请求加解密逻辑：
 
 `ClientProxyHandler.py`: **处理客户端的请求并转发给burp，通常用于解密请求和加密响应**
 
 `BurpProxyHandler.py`: **处理Burp的请求，通常用于加密请求和解密响应**
 
-3. 以默认参数运行BurpGuard：
+4. 以默认参数运行BurpGuard：
 ```python
 $ python BurpGuard.py
 
@@ -52,7 +57,7 @@ $ python BurpGuard.py
 
 ![alt text](./assets/2.png)
 
-**开始你的渗透之旅！**
+**5. 开始你的渗透之旅！**
 
 ## 编写指南
 
