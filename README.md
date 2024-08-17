@@ -39,7 +39,7 @@ options:
 
 `ClientProxyHandler.py`: **处理客户端的请求并转发给burp，通常用于解密请求和加密响应**
 
-`BurpProxyHandler.py`: **处理Burp的请求，通常用于加密请求和解密响应**
+`BurpProxyHandler.py`: **处理Burp的请求并转发给源服务器，通常用于加密请求和解密响应**
 
 4. 以默认参数运行BurpGuard：
 ```python
