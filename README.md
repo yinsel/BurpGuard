@@ -4,12 +4,15 @@
 
 **注：要求使用者具备一定Python基础**
 
+**如需配合SQLMap等自动化工具，使其走Burp的代理即可。**
 ## 使用方法
-1. 安装依赖：
+1. 安装依赖及证书：
 
 ```python
 $ pip install -r requirements.txt
 ```
+
+证书在系统当前用户目录下的`.mitmproxy`，选择`cer`后缀的证书安装至系统。
 
 2. 查看使用帮助：
 
