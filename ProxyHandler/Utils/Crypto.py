@@ -3,6 +3,7 @@ from Crypto.Cipher import DES as _DES
 from Crypto.Cipher import DES3 as _DES3
 from Crypto.Util.Padding import pad,unpad
 import hashlib
+from pypadding import *
 
 # ----------- AES加解密 -----------
 class AES:
@@ -22,7 +23,10 @@ class AES:
     def decrypt(data: bytes, mode: int,key: bytes, iv: bytes,style: str="pkcs7") -> bytes:
         cipher = _AES.new(key, mode, iv)
         decrypted = cipher.decrypt(data)
-        return unpad(decrypted, _AES.block_size, style)
+        try:
+            decrypted = unpad(decrypted, _AES.block_size, style)
+        except:
+            return decrypted
 
 # ----------- DES加解密 -----------
 class DES:
@@ -42,7 +46,10 @@ class DES:
     def decrypt(data: bytes, mode: int,key: bytes, iv: bytes, style: str="pkcs7") -> bytes:
         cipher = _DES.new(key, mode, iv)
         decrypted = cipher.decrypt(data)
-        return unpad(decrypted, _DES.block_size, style)
+        try:
+            decrypted = unpad(decrypted, _DES.block_size, style)
+        except:
+            return decrypted
 
 # ----------- DES3加解密 -----------
 class DES3:
@@ -62,7 +69,10 @@ class DES3:
     def des_decrypt(data: bytes, mode: int,key: bytes, iv: bytes, style: str="pkcs7") -> bytes:
         cipher = _DES3.new(key, mode, iv)
         decrypted = cipher.decrypt(data)
-        return unpad(decrypted, _DES3.block_size, style)
+        try:
+            decrypted = unpad(decrypted, _DES3.block_size, style)
+        except:
+            return decrypted
     
 class Hash:
     @staticmethod
