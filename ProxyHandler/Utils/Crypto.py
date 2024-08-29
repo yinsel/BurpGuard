@@ -3,7 +3,6 @@ from Crypto.Cipher import DES as _DES
 from Crypto.Cipher import DES3 as _DES3
 from Crypto.Util.Padding import pad,unpad
 import hashlib
-from pypadding import *
 
 # ----------- AES加解密 -----------
 class AES:
