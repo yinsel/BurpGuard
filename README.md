@@ -4,7 +4,7 @@
 
 **注：要求使用者具备一定Python基础**
 
-**如需配合SQLMap等自动化工具，使其走Burp的代理即可。**
+**如需配合SQLMap等自动化工具，使其走Burp的代理或者8082端口即可。**
 ## 使用方法
 1. 安装依赖及证书：
 
@@ -135,7 +135,7 @@ def response(self,flow: http.HTTPFlow):
     rsp.content = "data".encode()
 
     # 修改响应的body的JSON数据,如果不是JSON数据, 会抛出异常，建议判断Content-Type
-    if rsp.headers.get("Content-Type") == "application/json":
+    if "application/json" in rsp.headers.get("Content-Type"):
         json_data = rsp.json()
         if "data" in json_data:
             json_data["data"] = "data"
@@ -158,5 +158,18 @@ def request(self,flow: http.HTTPFlow):
     }
     response = self.client.post("http://127.0.0.1:12080",data=data)
     decrypt_data = response.text
+```
+测试demo: 
+```python
+import requests
+
+url = "http://127.0.0.1:12080/go"
+data = {
+    "group": "zzz",
+    "action": "encrypt",
+    "param": json.dumps({"data": "需要加密的数据"})
+}
+res=requests.post(url, data=data)
+print(res.text)
 ```
 
