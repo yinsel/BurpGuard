@@ -2,7 +2,7 @@ from Crypto.Cipher import AES as _AES
 from Crypto.Cipher import DES as _DES
 from Crypto.Cipher import DES3 as _DES3
 from Crypto.Util.Padding import pad,unpad
-from Crypto.PublicKey import RSA
+from Crypto.PublicKey import RSA as _RSA
 from Crypto.Cipher import PKCS1_v1_5
 import base64
 import hashlib
@@ -78,10 +78,9 @@ class DES3:
             
 # ----------- RSA加解密 -----------
 class RSA:
-    
     @staticmethod
     def rsa_encrypt(data,publicKey,length=117):
-        pubObj = RSA.importKey(publicKey)
+        pubObj = _RSA.importKey(publicKey)
         encryptor = PKCS1_v1_5.new(pubObj)
         dataLength = len(data)
         if dataLength < length:
@@ -94,7 +93,7 @@ class RSA:
 
     @staticmethod
     def rsa_decrypt(data,privateKey,length=128):
-        pubObj = RSA.importKey(privateKey)
+        pubObj = _RSA.importKey(privateKey)
         decryptor = PKCS1_v1_5.new(pubObj)
         data = base64.b64decode(data)
         dataLength = len(data)
