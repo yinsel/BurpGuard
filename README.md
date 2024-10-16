@@ -162,6 +162,7 @@ def request(self,flow: http.HTTPFlow):
 测试demo: 
 ```python
 import requests
+import json
 
 url = "http://127.0.0.1:12080/go"
 data = {
