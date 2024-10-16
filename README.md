@@ -5,6 +5,8 @@
 **注：要求使用者具备一定Python基础**
 
 **如需配合SQLMap等自动化工具，使其走Burp的代理或者8082端口即可。**
+
+**使用案例：** https://blog.yinsel.top/blog/09-BurpGuard%E7%9A%84%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B
 ## 使用方法
 1. 安装依赖及证书：
 
