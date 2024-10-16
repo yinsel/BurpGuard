@@ -93,8 +93,8 @@ class RSA:
 
     @staticmethod
     def rsa_decrypt(data,privateKey,length=128):
-        pubObj = _RSA.importKey(privateKey)
-        decryptor = PKCS1_v1_5.new(pubObj)
+        privObj = _RSA.importKey(privateKey)
+        decryptor = PKCS1_v1_5.new(privObj)
         data = base64.b64decode(data)
         dataLength = len(data)
         if dataLength < length:
