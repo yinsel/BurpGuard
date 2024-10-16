@@ -16,7 +16,7 @@ def main():
     parser.add_argument("-p1", "--port1", help="客户端代理端口, 默认8081", default="8081")
     parser.add_argument("-p2", "--port2", help="Burp上游代理端口, 默认8082", default="8082")
     parser.add_argument("-burp", "--burp", help="burp端口, 默认8080" ,default="8080")
-    parser.add_argument("-proxy", "--proxy", help="最终请求代理,仅支持http代理", required=False, default="")
+    parser.add_argument("-proxy", "--proxy", help="最终请求代理, 仅支持http代理", required=False, default="")
     parser.add_argument("-v", "--verbose", action="store_true", help="输出详细请求日志, 默认关闭", required=False, default=False)
 
     args = parser.parse_args()
