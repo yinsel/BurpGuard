@@ -22,7 +22,7 @@ class ClientProxyHandler:
         finally:
             return flow
 
-    # 处理返回给客户端的响应，通常在这里对响应进行解密
+    # 处理返回给客户端的响应，通常在这里对响应进行加密
     def response(self,flow: http.HTTPFlow):
         try:
             req = flow.request                  # 获取请求对象
