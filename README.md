@@ -34,7 +34,7 @@ options:
   -burp BURP, --burp BURP
                         burp端口, 默认8080
   -proxy PROXY, --proxy PROXY
-                        最终请求代理
+                        最终请求代理,仅支持http代理
   -v, --verbose         输出详细请求日志, 默认关闭
 ```
 3. 分别在`ClientProxyHandler.py`和`BurpProxyHandler.py`中编写请求加解密逻辑：
