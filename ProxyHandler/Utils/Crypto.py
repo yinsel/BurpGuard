@@ -79,8 +79,8 @@ class DES3:
 # ----------- RSA加解密 -----------
 class RSA:
     @staticmethod
-    def rsa_encrypt(data,publicKey,length=117):
-        pubObj = _RSA.importKey(publicKey)
+    def rsa_encrypt(data: str,publicKey: str,length=117):
+        pubObj = _RSA.importKey("-----BEGIN PUBLIC KEY-----\n" + publicKey + "\n-----END PUBLIC KEY-----")
         encryptor = PKCS1_v1_5.new(pubObj)
         dataLength = len(data)
         if dataLength < length:
@@ -92,8 +92,8 @@ class RSA:
         return base64.b64encode(bytes(result)).decode()
 
     @staticmethod
-    def rsa_decrypt(data,privateKey,length=128):
-        privObj = _RSA.importKey(privateKey)
+    def rsa_decrypt(data: str,privateKey: str,length=128):
+        privObj = _RSA.importKey("-----BEGIN PRIVATE KEY-----\n" + privateKey + "\n-----END PRIVATE KEY-----")
         decryptor = PKCS1_v1_5.new(privObj)
         data = base64.b64decode(data)
         dataLength = len(data)
