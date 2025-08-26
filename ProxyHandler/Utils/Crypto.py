@@ -29,6 +29,7 @@ class AES:
             decrypted = unpad(decrypted, _AES.block_size, style)
         except:
             return decrypted
+        return decrypted
 
 # ----------- DES加解密 -----------
 class DES:
@@ -52,6 +53,7 @@ class DES:
             decrypted = unpad(decrypted, _DES.block_size, style)
         except:
             return decrypted
+        return decrypted
 
 # ----------- DES3加解密 -----------
 class DES3:
@@ -75,6 +77,7 @@ class DES3:
             decrypted = unpad(decrypted, _DES3.block_size, style)
         except:
             return decrypted
+        return decrypted
             
 # ----------- RSA加解密 -----------
 class RSA:
