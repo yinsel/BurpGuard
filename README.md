@@ -6,12 +6,11 @@
 
 **如需配合SQLMap等自动化工具，使其走Burp的代理或者8082端口即可。**
 
-**使用案例：** [https://blog.yinsel.top/%E6%96%87%E7%AB%A0/9-BurpGuard%E7%9A%84%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B](https://blog.yinsel.top/4-%E6%96%87%E7%AB%A0/9-BurpGuard%E7%9A%84%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B)
 ## 使用方法
 1. 安装依赖及证书：
 
 ```python
-$ pip install -r requirements.txt
+$ uv sync
 ```
 
 证书在系统当前用户目录下的`.mitmproxy`，选择`cer`后缀的证书安装至系统。

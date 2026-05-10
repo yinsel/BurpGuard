@@ -1,40 +1,117 @@
 import argparse
-import subprocess
-import time
-# 启动客户端代理
-def start_client_proxy_handler(port: str, verbose: bool, burp: str) -> subprocess.Popen:
-    command = f"""mitmdump -s ProxyHandler/ClientProxyHandler.py --mode upstream:http://127.0.0.1:{burp}@{port}  {'' if verbose else '-q'} -k"""
-    return subprocess.Popen(command, shell=True)
+from pathlib import Path
+from multiprocessing import Process
+from mitmproxy.tools.main import mitmdump
 
-# 启动 Burp 上游代理
-def start_burp_proxy_handler(port: str, verbose: bool,proxy: str) -> subprocess.Popen:
-    command = f"""mitmdump -s ProxyHandler/BurpProxyHandler.py {f"-p {port}" if proxy == "" else f"{f'--mode upstream:{proxy}@{port}'}"} {'' if verbose else '-q'} -k"""
-    return subprocess.Popen(command, shell=True)
+BASE_DIR = Path(__file__).parent
+
+def addon(config, file):
+    return BASE_DIR / config / file
+
+def validate_config(config):
+    required = [
+        "ClientProxyHandler.py",
+        "BurpProxyHandler.py"
+    ]
+
+    missing = []
+
+    for file in required:
+        path = addon(config, file)
+
+        if not path.exists():
+            missing.append(path)
+
+    if missing:
+        for path in missing:
+            print(f"[!] Missing addon: {path}")
+
+        raise SystemExit(1)
+
+
+def run_proxy(script, port, verbose, mode=None):
+    args = [
+        "-s", str(script),
+        "-p", str(port),
+        "-k",
+    ]
+
+    if mode:
+        args += ["--mode", mode]
+
+    if not verbose:
+        args.insert(0, "-q")
+
+    mitmdump(args=args)
+
+
+def client_proxy(port, verbose, burp, config):
+    run_proxy(
+        addon(config, "ClientProxyHandler.py"),
+        port,
+        verbose,
+        f"upstream:http://127.0.0.1:{burp}"
+    )
+
+
+def burp_proxy(port, verbose, proxy, config):
+    run_proxy(
+        addon(config, "BurpProxyHandler.py"),
+        port,
+        verbose,
+        f"upstream:{proxy}" if proxy else None
+    )
+
 
 def main():
     parser = argparse.ArgumentParser(description="BurpGuard")
-    parser.add_argument("-p1", "--port1", help="客户端代理端口, 默认8081", default="8081")
-    parser.add_argument("-p2", "--port2", help="Burp上游代理端口, 默认8082", default="8082")
-    parser.add_argument("-burp", "--burp", help="burp端口, 默认8080" ,default="8080")
-    parser.add_argument("-proxy", "--proxy", help="最终请求代理, 仅支持http代理", required=False, default="")
-    parser.add_argument("-v", "--verbose", action="store_true", help="输出详细请求日志, 默认关闭", required=False, default=False)
+
+    parser.add_argument("-c", "--config", required=True)
+    parser.add_argument("-p1", default=8081)
+    parser.add_argument("-p2", default=8082)
+    parser.add_argument("-burp", default=8080)
+    parser.add_argument("-proxy", default="")
+    parser.add_argument("-v", "--verbose", action="store_true")
 
     args = parser.parse_args()
 
-    client_proxy_process = start_client_proxy_handler(args.port1, args.verbose, args.burp)
-    time.sleep(0.1)
-    burp_proxy_process = start_burp_proxy_handler(args.port2, args.verbose, args.proxy)
+    validate_config(args.config)
+
+    processes = [
+        Process(
+            target=client_proxy,
+            args=(args.p1, args.verbose, args.burp, args.config),
+            daemon=True
+        ),
+        Process(
+            target=burp_proxy,
+            args=(args.p2, args.verbose, args.proxy, args.config),
+            daemon=True
+        )
+    ]
+
+    for p in processes:
+        p.start()
 
     print("[*] BurpGuard 启动成功")
-    print(f"[*] 客户端代理端口: {args.port1}")
+    print(f"[*] 加载配置名称: {args.config}")
+    print(f"[*] 客户端代理端口: {args.p1}")
     print(f"[*] Burp端口: {args.burp}")
-    print(f"[*] Burp上游代理端口: {args.port2}")
+    print(f"[*] Burp上游代理端口: {args.p2}")
+
     if args.proxy:
         print(f"[*] 最终请求代理: {args.proxy}")
-    print("[*] 最终代理链: " + f"客户端->{args.port1}->Burp({args.burp})->{args.port2}" + (f"->{args.proxy}" if args.proxy else ""))
 
-    client_proxy_process.wait()
-    burp_proxy_process.wait()
+    chain = f"客户端->{args.p1}->Burp({args.burp})->{args.p2}"
+
+    if args.proxy:
+        chain += f"->{args.proxy}"
+
+    print(f"[*] 最终代理链: {chain}")
+
+    for p in processes:
+        p.join()
+
 
 if __name__ == "__main__":
     main()
