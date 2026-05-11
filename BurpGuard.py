@@ -34,6 +34,7 @@ def run_proxy(script, port, verbose, mode=None):
         "-s", str(script),
         "-p", str(port),
         "-k",
+        "--http2"
     ]
 
     if mode:
